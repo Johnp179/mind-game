@@ -109,7 +109,7 @@ function ScoreScene({
 }) {
   return (
     <div className="min-h-screen flex flex-col gap-4 justify-center items-center">
-      <h1>Your score is {(score / iterations) * 100} %</h1>
+      <h1>Your score is {Math.round((score / iterations) * 100)} %</h1>
       <button className={`${buttonStyle} uppercase`} onClick={() => reset()}>
         Play again
       </button>
@@ -126,18 +126,18 @@ function ScoreScene({
 function Timer({
   cumTime,
   time,
-  dummy,
+  displaySolution,
 }: {
   cumTime: number;
   time: number;
-  dummy?: boolean;
+  displaySolution: boolean;
 }) {
   const width = Math.round((cumTime / time) * 100);
   return (
     <div
       className={`${
-        dummy ? "invisible" : "visible"
-      } relative w-52 border-2 border-red-500 h-10`}
+        displaySolution ? "invisible" : "visible"
+      } relative w-52 h-9`}
     >
       <div
         className="absolute inset-0 bg-green-500 h-full"
@@ -332,7 +332,6 @@ function MainScene({
   const deltaT = 15;
   const [cumTime, setCumTime] = useState(0);
   const [paused, setPaused] = useState(false);
-
   function alterPuzzle() {
     setPuzzle(generateRandomPuzzle(rows, cols, difficulty));
   }
@@ -383,7 +382,7 @@ function MainScene({
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-5">
-      <Timer cumTime={cumTime} time={time} />
+      <Timer displaySolution={displaySolution} cumTime={cumTime} time={time} />
       {displaySolution ? (
         <InteractiveBoard
           difficulty={difficulty}
@@ -393,7 +392,12 @@ function MainScene({
       ) : (
         <Board puzzle={puzzle} />
       )}
-      <button className={buttonStyle} onClick={handleSubmit}>
+      <button
+        className={`${buttonStyle} ${
+          displaySolution ? "visible" : "invisible"
+        }`}
+        onClick={handleSubmit}
+      >
         Submit
       </button>
     </div>
@@ -401,7 +405,7 @@ function MainScene({
 }
 
 export default function Game() {
-  const totalIterations = 1;
+  const totalIterations = 3;
   const [iterations, setIterations] = useState(0);
   const [time, setTime] = useState(1500);
   const [intro, setIntro] = useState(true);

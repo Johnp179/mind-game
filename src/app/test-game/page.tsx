@@ -1,20 +1,40 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function Page() {
-  const data = useRef<number[]>([]);
-  const [counter, setCounter] = useState(0);
+function useInitializer(id: string) {
+  useEffect(() => {
+    console.log(`comp ${id} has just been created`);
+    return () => console.log(`comp ${id} is now destroyed`);
+  }, []);
+}
 
-  function onClick() {
-    setCounter(counter + 1);
-    data.current.push(counter);
-    console.log(data.current.length);
-  }
+function CompTwo({ switcher }: { switcher: () => void }) {
+  useInitializer("2");
   return (
-    <div className="flex gap-1.5">
-      <button onClick={onClick}>click me</button>
-      <p>{JSON.stringify(data.current)}</p>
+    <div>
+      <h1>This is the the second Component</h1>
+      <button onClick={() => switcher()}>switch</button>
     </div>
   );
+}
+function CompOne({ switcher }: { switcher: () => void }) {
+  useInitializer("1");
+  return (
+    <div>
+      <h1>This is the first Component</h1>
+      <button onClick={switcher}>switch</button>
+    </div>
+  );
+}
+
+export default function Page() {
+  const [switcher, setSwitcher] = useState(false);
+
+  function onClick() {
+    setSwitcher(!switcher);
+  }
+
+  if (switcher) return <CompOne switcher={onClick} />;
+  return <CompTwo switcher={onClick} />;
 }
