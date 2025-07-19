@@ -138,10 +138,14 @@ function MainScene({
 
 function OptionsScene({
   setDifficulty,
+  numOfIterations,
+  setNumOfIterations,
   difficulty,
   setOptions,
 }: {
   difficulty: number;
+  numOfIterations: number;
+  setNumOfIterations: (num: number) => void;
   setOptions: (val: boolean) => void;
   setDifficulty: (val: number) => void;
 }) {
@@ -164,6 +168,15 @@ function OptionsScene({
           onChange={(e) => setDifficulty(Number(e.target.value))}
         />
         <p className="text-center">{difficulty}</p>
+        <input
+          className="border text-white p-0.5"
+          value={numOfIterations}
+          min="2"
+          max="10"
+          type="range"
+          onChange={(e) => setNumOfIterations(Number(e.target.value))}
+        />
+        <p className="text-center">{numOfIterations}</p>
         <button className={`${buttonStyle} w-[80%] block`}>Submit</button>
       </form>
     </div>
@@ -195,10 +208,10 @@ function ScoreScene({
 }
 
 export default function Page() {
-  const numOfIterations = 2;
+  const [numOfIterations, setNumOfIterations] = useState(4);
   const [intro, setIntro] = useState(true);
   const [options, setOptions] = useState(false);
-  const [difficulty, setDifficulty] = useState(8);
+  const [difficulty, setDifficulty] = useState(5);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [iterationCount, setIterationCount] = useState(0);
@@ -213,6 +226,8 @@ export default function Page() {
     return (
       <OptionsScene
         setDifficulty={setDifficulty}
+        numOfIterations={numOfIterations}
+        setNumOfIterations={setNumOfIterations}
         setOptions={setOptions}
         difficulty={difficulty}
       />
