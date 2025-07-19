@@ -1,7 +1,7 @@
 "use client";
 
 function doSomething() {
-  return "this is just some random data";
+  return "the data has not changed";
 }
 
 export default function Page() {
