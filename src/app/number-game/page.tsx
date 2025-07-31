@@ -7,6 +7,7 @@ import {
   SetStateAction,
   Dispatch,
 } from "react";
+import { useRouter } from "next/navigation";
 
 const buttonStyle =
   "border border-b-white rounded-md p-1.5 hover:bg-white hover:text-black";
@@ -194,6 +195,7 @@ function ScoreScene({
   startNewGame: () => void;
   setDifficulty: (val: number) => void;
 }) {
+  const router = useRouter();
   return (
     <div className="flex flex-col gap-2 items-center justify-center min-h-screen">
       <h1>Your score is {(score / iterations) * 100} %</h1>
@@ -202,6 +204,9 @@ function ScoreScene({
       </button>
       <button className={buttonStyle} onClick={() => setOptions(true)}>
         Options
+      </button>
+      <button className={buttonStyle} onClick={() => router.push("/")}>
+        Home Screen
       </button>
     </div>
   );

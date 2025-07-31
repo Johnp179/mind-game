@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import _ from "lodash";
+import { useRouter } from "next/navigation";
 
 const buttonStyle =
   "border border-white rounded-md p-1.5 hover:bg-white hover:text-black";
@@ -107,6 +108,7 @@ function ScoreScene({
   setOptions: (val: boolean) => void;
   iterations: number;
 }) {
+  const router = useRouter();
   return (
     <div className="min-h-screen flex flex-col gap-4 justify-center items-center">
       <h1>Your score is {Math.round((score / iterations) * 100)} %</h1>
@@ -118,6 +120,12 @@ function ScoreScene({
         onClick={() => setOptions(true)}
       >
         Options
+      </button>
+      <button
+        className={`${buttonStyle} uppercase`}
+        onClick={() => router.push("/")}
+      >
+        Home Screen
       </button>
     </div>
   );
@@ -137,7 +145,7 @@ function Timer({
     <div
       className={`${
         displaySolution ? "invisible" : "visible"
-      } relative w-52 h-9`}
+      } relative w-52 h-9 border-2 border-green-500`}
     >
       <div
         className="absolute inset-0 bg-green-500 h-full"
