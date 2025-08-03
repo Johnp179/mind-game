@@ -1,13 +1,15 @@
 "use client";
 
-function doSomething() {
-  return "the data has not changed";
-}
+import { useState, useRef } from "react";
 
 export default function Page() {
+  const [state, setState] = useState(0);
+  console.log(state);
+  const ref = useRef(state);
   return (
     <div>
-      <h1>{doSomething()}</h1>
+      {ref.current}
+      <button onClick={() => setState(state + 1)}>click</button>
     </div>
   );
 }

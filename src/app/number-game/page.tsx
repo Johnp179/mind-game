@@ -6,6 +6,7 @@ import {
   FormEvent,
   SetStateAction,
   Dispatch,
+  useRef,
 } from "react";
 import { useRouter } from "next/navigation";
 
@@ -184,21 +185,20 @@ function OptionsScene({
   );
 }
 function ScoreScene({
-  score,
   setOptions,
-  iterations,
+  result,
   startNewGame,
 }: {
   setOptions: (val: boolean) => void;
-  score: number;
   iterations: number;
+  result: number;
   startNewGame: () => void;
   setDifficulty: (val: number) => void;
 }) {
   const router = useRouter();
   return (
     <div className="flex flex-col gap-2 items-center justify-center min-h-screen">
-      <h1>Your score is {(score / iterations) * 100} %</h1>
+      <h1>Your score is {result} %</h1>
       <button className={buttonStyle} onClick={() => startNewGame()}>
         Play Again?
       </button>
@@ -213,14 +213,14 @@ function ScoreScene({
 }
 
 export default function Page() {
-  const [numOfIterations, setNumOfIterations] = useState(4);
+  const [numOfIterations, setNumOfIterations] = useState(2);
   const [intro, setIntro] = useState(true);
   const [options, setOptions] = useState(false);
   const [difficulty, setDifficulty] = useState(5);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [iterationCount, setIterationCount] = useState(0);
-
+  const result = useRef(0);
   function startNewGame() {
     setIterationCount(0);
     setGameOver(false);
@@ -243,7 +243,7 @@ export default function Page() {
       <ScoreScene
         setOptions={setOptions}
         startNewGame={startNewGame}
-        score={score}
+        result={result.current}
         iterations={numOfIterations}
         setDifficulty={setDifficulty}
       />
@@ -251,6 +251,7 @@ export default function Page() {
   }
 
   if (iterationCount === numOfIterations) {
+    result.current = Math.round((score / numOfIterations) * 100);
     setGameOver(true);
   }
 
